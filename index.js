@@ -52,6 +52,15 @@ async function run() {
             const result = await reviewCollection.insertOne(review)
             res.send(result)
           })
+        app.post('/profile', async (req, res) => {
+            const review = req.body;
+            const result = await profileCollection.insertOne(review)
+            res.send(result)
+          })
+          app.get('/profile', async(req, res) => {
+              const profile = await profileCollection.find().toArray();
+              res.send(profile)
+          })
 
     } finally {
     }
