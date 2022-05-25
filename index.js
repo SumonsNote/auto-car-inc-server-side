@@ -10,7 +10,6 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.txk2a.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-console.log(uri);
 
 async function run() {
     try {
@@ -39,6 +38,14 @@ async function run() {
             const result = await orderCollection.insertOne(orders);
             return res.send(result);
         })
+
+        app.delete('/orders/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = {email: email}
+            const result = await orderCollection.deleteOne(query);
+            return res.send(result);
+        })
+
         app.get('/orders', async (req, res) => {
             const orders = await orderCollection.find().toArray();
             res.send(orders)
